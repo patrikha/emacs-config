@@ -294,6 +294,10 @@
   (local-set-key (kbd "C-c C-c") 'recompile))
 
 (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
+
+;; ----------------------------------------------------------------- [ docker ]
+;; sudo npm install -g dockerfile-language-server-nodejs
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
