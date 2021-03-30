@@ -195,7 +195,10 @@
   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
   )
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-(use-package company-lsp :commands company-lsp)
+
+;; use icons for company-mode
+(use-package company-box
+  :hook (company-mode . company-box-mode))
 
 ;; in case you are using client which is available as part of lsp refer to the
 ;; table bellow for the clients that are distributed as part of lsp-mode.el
@@ -228,8 +231,7 @@
 
 (defun my-python-flycheck-setup ()
   (add-to-list 'flycheck-checkers 'lsp)
-  (flycheck-add-next-checker 'lsp 'python-pylint)
-  (flycheck-add-next-checker 'python-pylint 'python-flake8))
+  (flycheck-add-next-checker 'lsp 'python-pylint))
 
 (with-eval-after-load 'lsp
   (with-eval-after-load 'flycheck
@@ -258,6 +260,26 @@
 ;; npm i -g vscode-html-languageserver-bin
 ;; npm i -g jsonlint
 
+;; ------------------------------------------------------------- [ typescript ]
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+(add-hook 'before-save-hook 'tide-format-before-save)
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+
 ;; ------------------------------------------------------------------ [ c/c++ ]
 ;; clangd
 
@@ -267,6 +289,7 @@
 (use-package toml-mode)
 (use-package cargo
   :hook (rust-mode . cargo-minor-mode))
+(setq lsp-rust-server 'rust-analyzer)
 
 ;; --------------------------------------------------------------------- [ c# ]
 (eval-after-load
@@ -304,7 +327,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(forge c-c-combo nsis-mode yasnippet yaml-mode vdiff-magit use-package thrift smex smartparens rust-mode rainbow-delimiters pyvenv projectile origami omnisharp lsp-ui lsp-java htmlize golden-ratio fringe-helper flx find-file-in-repository exec-path-from-shell doom-modeline dockerfile-mode dap-mode counsel company-lsp color-theme-sanityinc-tomorrow color-theme color-moccur browse-kill-ring bm ace-jump-mode)))
+   '(elixir-mode forge c-c-combo nsis-mode yasnippet yaml-mode vdiff-magit use-package thrift smex smartparens rust-mode rainbow-delimiters pyvenv projectile origami omnisharp lsp-ui lsp-java htmlize golden-ratio fringe-helper flx find-file-in-repository exec-path-from-shell doom-modeline dockerfile-mode dap-mode counsel company-lsp color-theme-sanityinc-tomorrow color-theme color-moccur browse-kill-ring bm ace-jump-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

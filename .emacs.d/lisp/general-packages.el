@@ -43,7 +43,8 @@
     forge
     lsp-mode
     lsp-ui
-    company-lsp
+    company
+    company-box
     projectile
     yasnippet
     plantuml-mode
@@ -64,6 +65,7 @@
     ;; Java
     lsp-java
     ;; Web lang
+    tide
     ;; C/C++ lang
     ;; C#
     csharp-mode
